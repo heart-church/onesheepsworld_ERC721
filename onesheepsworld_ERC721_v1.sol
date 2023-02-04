@@ -15,11 +15,16 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
 
     string baseURI;
     string public baseExtension = ".json";
+    uint256 public allowListCost = 0.02 ether;
     uint256 public cost = 0.1 ether;
     uint256 public maxSupply = 10000;
     uint256 public maxMintAmount = 10;
     bool public revealed = false;
     string public notRevealedUri;
+
+    bool public publicMintOpen = false;
+    bool public allowListMintOpen = false;
+    mapping(address => bool) public allowList;
 
     constructor(
         string memory _name,
@@ -31,8 +36,27 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         setNotRevealedURI(_initNotRevealedUri);
     }
 
-    function mint(uint256 _mintAmount) public payable whenNotPaused {
+    function allowListMint(uint256 _mintAmount) public payable whenNotPaused {
         uint256 supply = totalSupply();
+        require(allowListMintOpen, "Allowlist mint is not currently open.");
+        require(allowList[msg.sender], "You are not on the allow list");
+
+        require(_mintAmount > 0, "You must mint more than 0.");
+        require(_mintAmount <= maxMintAmount, "You must mint less than or equal to the maxMintAmount.");
+        require(supply + _mintAmount <= maxSupply, "Contract is sold out, all NFT's have been minted.");
+
+        if (msg.sender != owner()) {
+            refundIfOver(allowListCost * _mintAmount);
+        }
+
+        for (uint256 i = 1; i <= _mintAmount; i++) {
+            _safeMint(msg.sender, supply + i);
+        }
+    }
+
+    function publicMint(uint256 _mintAmount) public payable whenNotPaused {
+        uint256 supply = totalSupply();
+        require(publicMintOpen, "Public mint is not currently open.");
         require(_mintAmount > 0, "You must mint more than 0.");
         require(_mintAmount <= maxMintAmount, "You must mint less than or equal to the maxMintAmount.");
         require(supply + _mintAmount <= maxSupply, "Contract is sold out, all NFT's have been minted.");
@@ -50,6 +74,20 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         require(msg.value >= price, "Need to send more ETH.");
         if (msg.value > price) {
             payable(msg.sender).transfer(msg.value - price);
+        }
+    }
+
+    function editMintWindows(
+        bool _publicMintOpen,
+        bool _allowListMintOpen
+    ) external onlyOwner {
+        publicMintOpen = _publicMintOpen;
+        allowListMintOpen = _allowListMintOpen;
+    }
+
+    function setAllowList(address[] calldata addresses) external onlyOwner {
+        for(uint256 i = 0; i < addresses.length; i++){
+            allowList[addresses[i]] = true;
         }
     }
 
@@ -107,15 +145,16 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
     }
 
     //only owner
-    function reveal() public onlyOwner {
+    function reveal() external onlyOwner {
         revealed = true;
     }
     
-    function setCost(uint256 _newCost) public onlyOwner {
+    function setCost(uint256 _newCost, uint256 _newCostAllowList) external onlyOwner {
         cost = _newCost;
+        allowListCost = _newCostAllowList;
     }
 
-    function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner {
+    function setmaxMintAmount(uint256 _newmaxMintAmount) external onlyOwner {
         maxMintAmount = _newmaxMintAmount;
     }
     
@@ -131,9 +170,9 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         baseExtension = _newBaseExtension;
     }
 
-    function withdraw() public payable onlyOwner {
-        (bool odraw, ) = payable(owner()).call{value: address(this).balance}("");
-        require(odraw);
+     function withdraw(address _addr) external onlyOwner {
+        uint256 balalnce = address(this).balance;
+        payable(_addr).transfer(balalnce);
     }
 }
 
