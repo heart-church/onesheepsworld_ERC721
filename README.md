@@ -5,7 +5,7 @@ This is the smart contract governing OneSheepsWorld NFT project.
 ## Features
 - Multi-mint
 - Pause / Unpause
-- Open / Close Public Mint & Allow List Minth
+- Open / Close Public Mint & Allow List Mint
 - Withdraw funds out to specific address
 - Reveal URI
 - Allow list (whitelist)
