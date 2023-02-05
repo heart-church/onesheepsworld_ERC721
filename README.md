@@ -9,4 +9,4 @@ This is the smart contract governing OneSheepsWorld NFT project.
 - Pause / Unpause
 - Withdraw funds out to specific address
 - Reveal URI
-- Can update prices for Allow List Mint / Public Mint, each seperate prices
+- Can update contract prices

@@ -14,6 +14,7 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
 
     string baseURI;
     string public baseExtension = ".json";
+    uint256 public allowListCost = 0.1 ether;
     uint256 public cost = 0.1 ether;
     uint256 public maxSupply = 10000;
     uint256 public maxMintAmount = 10;
@@ -37,14 +38,14 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
     function allowListMint(uint256 _mintAmount) public payable whenNotPaused {
         uint256 supply = totalSupply();
         require(allowListMintOpen, "Allowlist mint is not currently open.");
-        require(allowList[msg.sender], "You are not on the allow list.");
+        require(allowList[msg.sender], "You are not on the allow list");
 
         require(_mintAmount > 0, "You must mint more than 0.");
         require(_mintAmount <= maxMintAmount, "You must mint less than or equal to the maxMintAmount.");
         require(supply + _mintAmount <= maxSupply, "Contract is sold out, all NFT's have been minted.");
 
         if (msg.sender != owner()) {
-            refundIfOver(cost * _mintAmount);
+            refundIfOver(allowListCost * _mintAmount);
         }
 
         for (uint256 i = 1; i <= _mintAmount; i++) {
@@ -147,8 +148,9 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         revealed = true;
     }
     
-    function setCost(uint256 _newCost) external onlyOwner {
+    function setCost(uint256 _newCost, uint256 _newCostAllowList) external onlyOwner {
         cost = _newCost;
+        allowListCost = _newCostAllowList;
     }
 
     function setmaxMintAmount(uint256 _newmaxMintAmount) external onlyOwner {
