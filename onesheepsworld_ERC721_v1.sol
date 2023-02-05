@@ -44,8 +44,8 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         require(supply + _mintAmount <= maxSupply, "Contract is sold out, all NFT's have been minted.");
 
         if (msg.sender != owner()) {
-            refundIfOver(allowListCost * _mintAmount);
             require(allowList[msg.sender], "You are not on the allow list");
+            refundIfOver(allowListCost * _mintAmount);
         }
 
         for (uint256 i = 1; i <= _mintAmount; i++) {
