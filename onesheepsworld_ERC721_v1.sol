@@ -76,28 +76,6 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         }
     }
 
-    function editMintWindows(
-        bool _publicMintOpen,
-        bool _allowListMintOpen
-    ) external onlyOwner {
-        publicMintOpen = _publicMintOpen;
-        allowListMintOpen = _allowListMintOpen;
-    }
-
-    function setAllowList(address[] calldata addresses) external onlyOwner {
-        for(uint256 i = 0; i < addresses.length; i++){
-            allowList[addresses[i]] = true;
-        }
-    }
-
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
-    }
-
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
         internal
         whenNotPaused
@@ -142,6 +120,29 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
     }
 
     //only owner
+
+    function editMintWindows(
+        bool _publicMintOpen,
+        bool _allowListMintOpen
+    ) external onlyOwner {
+        publicMintOpen = _publicMintOpen;
+        allowListMintOpen = _allowListMintOpen;
+    }
+
+    function setAllowList(address[] calldata addresses) external onlyOwner {
+        for(uint256 i = 0; i < addresses.length; i++){
+            allowList[addresses[i]] = true;
+        }
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
     function reveal() external onlyOwner {
         revealed = true;
     }
