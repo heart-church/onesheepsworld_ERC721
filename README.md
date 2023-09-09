@@ -2,6 +2,8 @@
 
 This is the smart contract governing OneSheepsWorld NFT project.
 
+Website: https://onesheepsworld.com/
+
 ## Features
 - Multi-mint, customizeable maximum
 - Private Sale address registration (Owner Register, Public Register Options)

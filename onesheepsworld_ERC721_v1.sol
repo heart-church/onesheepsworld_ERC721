@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: MIT
 // OneSheepsWorld NFT - v1.0.01a
 // compiled 0.8.21+commit.d9974bed
+
+// Website: https://onesheepsworld.com/
+// X / Twitter: https://twitter.com/OneSheepsWorld
+
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -97,7 +101,7 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
 
         allowList[_RegAddress] = true;
     }
-    
+
     function refundIfOver(uint256 price) private {
         require(msg.value >= price, "Need to send more ETH.");
         if (msg.value > price) {
