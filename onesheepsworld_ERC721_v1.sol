@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 // OneSheepsWorld NFT - v1.0.01c
-// compiled 0.8.21+commit.d9974bed
+// compiled 0.8.18+commit.d9974bed
 
 // Website: https://onesheepsworld.com/
 // X / Twitter: https://twitter.com/OneSheepsWorld
