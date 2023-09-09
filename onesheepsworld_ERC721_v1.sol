@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OneSheepsWorld NFT - v1.0.01c
+// OneSheepsWorld NFT - v1.0.01d
 // compiled 0.8.18+commit.87f61d96
 
 // Website: https://onesheepsworld.com/
@@ -87,6 +87,7 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
 
     function registerPrivateSale(address _RegAddress) public payable whenNotPaused {
         require(allowListRegOpen, "Registration for Private Sale is not currently open.");
+        require(allowList[_RegAddress] != true, "This address is already registered for the private sale.");
 
         if ((msg.sender != owner()) && (allowListRegCost > 0 ether)) {
             refundIfOver(allowListRegCost);
