@@ -20,6 +20,7 @@ library MintLimit {
     }
 }
 
+/// @custom:security-contact business@onesheepsworld.com
 contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
     using Strings for uint256;
     using MintLimit for MintLimit.AddrMintLimit;
