@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OneSheepsWorld NFT - v1.0.01b
+// OneSheepsWorld NFT - v1.0.01c
 // compiled 0.8.21+commit.d9974bed
 
 // Website: https://onesheepsworld.com/
@@ -181,8 +181,9 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
         allowListRegCost = _newAllowListRegCost;
     }
 
-    function setmaxMintAmount(uint256 _newmaxMintAmount) external onlyOwner {
+    function setmaxMintAmount(uint256 _newmaxMintAmount, uint256 _newmaxTotalAddrMint) external onlyOwner {
         maxMintAmount = _newmaxMintAmount;
+        maxTotalAddrMint = _newmaxTotalAddrMint;
     }
     
     function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
