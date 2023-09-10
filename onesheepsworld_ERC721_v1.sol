@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// OneSheepsWorld NFT - v1.0.01d
+// OneSheepsWorld NFT - v1.0.01e
 // compiled 0.8.18+commit.87f61d96
 
 // Website: https://onesheepsworld.com/
@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Ownable {
     using Strings for uint256;
 
-    string baseURI;
+    string public baseURI;
     string public baseExtension = ".json";
     uint256 public allowListCost = 0.1 ether;        //private sale price
     uint256 public allowListRegCost = 0.01 ether;    //registration fee per private address registration
@@ -140,9 +140,8 @@ contract OneSheepsWorld is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable,
             return notRevealedUri;
         }
 
-        string memory currentBaseURI = _baseURI();
-        return bytes(currentBaseURI).length > 0
-            ? string(abi.encodePacked(currentBaseURI, tokenId.toString(), baseExtension))
+        return bytes(baseURI).length > 0
+            ? string(abi.encodePacked(baseURI, tokenId.toString(), baseExtension))
             : "";
     }
 
